@@ -17,7 +17,7 @@ class SJApi(ApiWorker):
         self.__only_with_salary = 0
         self.__salary = None
         self.__page = 0
-        self.__count = 100
+        self.__count = 20
 
     def get_vacancies(self):
         """Возвращает список вакансий"""

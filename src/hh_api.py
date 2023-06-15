@@ -17,7 +17,7 @@ class HHApi(ApiWorker):
         self.__only_with_salary = False
         self.__currency = None
         self.__page = 0
-        self.__per_page = 100
+        self.__per_page = 20
 
     def __repr__(self):
         return f'{self.__class__.__name__}()'
@@ -103,14 +103,15 @@ class HHApi(ApiWorker):
 a = HHApi()
 a.keyword = 'python'
 b = a.get_vacancies()
-print(b)
-for i in b:
-    # print(i)
-    #print(i.description)
-    #print(i.salary)
+#print(b)
+# c = b.write_json
+#for i in b:
+    #print(i)
+    # print(i.description)
+    # print(i.salary)
     # print(i.experience)
     # print(i.area)
     # print(i.vac_url())
     # print(i.vac_employer)
     # print(i.vac_employment)
-    print(i.all_vacancy_information())
+    #print(i.all_vacancy_information())

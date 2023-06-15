@@ -1,4 +1,5 @@
 class Vacancies:
+    vacancies = []
 
     def __init__(
             self, name, requirement, responsibility,
@@ -32,8 +33,13 @@ class Vacancies:
         self.__employment = employment
         self.__area = area
 
+        Vacancies.vacancies.append(self)
+
     def __repr__(self):
-        return f'{self.__class__.__name__}()'
+        return f'{self.__class__.__name__}({self.name}, {self.vacancy_url}, {self.__requirement},' \
+               f'{self.__responsibility}, {self.__salary_from}, {self.__salary_to},' \
+               f'{self.__currency}, {self.__experience}, {self.__employer},' \
+               f'{self.__employment}, {self.__area})'
 
     def __str__(self):
         return f'Вакансия: {self.name}'
@@ -50,7 +56,7 @@ class Vacancies:
         """Возвращает диапазон зарплат у вакансии"""
 
         if self.__salary_from == 0 and self.__salary_to == 0:
-            return "'Зарплата не указана'"
+            return "Зарплата не указана"
 
         elif self.__salary_from is None:
             return f'З/п до {self.__salary_to} {self.__currency}'
@@ -65,11 +71,18 @@ class Vacancies:
             return f'З/п от {self.__salary_from} до {self.__salary_to} {self.__currency}'
 
     @property
+    def currency(self):
+        """Возвращает валюту зарплаты"""
+
+        return self.__currency
+
+    @property
     def experience(self):
         """Возвращает опыт для вакансии"""
 
         return f'Опыт работы: {self.__experience}'
 
+    @property
     def vac_url(self):
         """Возвращает ссылку на вакансию"""
 
@@ -82,13 +95,13 @@ class Vacancies:
         return self.__area
 
     @property
-    def vac_employer(self):
+    def employer(self):
         """Возвращает работодателя"""
 
         return f'Работодатель: {self.__employer}'
 
     @property
-    def vac_employment(self):
+    def employment(self):
         """Возвращает занятость"""
 
         return f'Занятость: {self.__employment}'
@@ -98,5 +111,5 @@ class Vacancies:
 
         return f'Вакансия:\n{self.name}, {self.salary}\n' \
                f'{self.experience}\nГород: {self.area}\n' \
-               f'{self.description}\n{self.vac_employment}\n' \
-               f'{self.vac_employer}\n{self.vac_url()}'
+               f'{self.description}\n{self.employment}\n' \
+               f'{self.employer}\n{self.vac_url()}'
