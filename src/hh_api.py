@@ -10,14 +10,7 @@ class HHApi(ApiWorker):
     def __init__(self):
         self.api_url = 'https://api.hh.ru/vacancies'
         self.keyword = None
-        self.vacancy_url = None
-        self.__experience = None
-        self.__salary = None
-        self.__area = None
-        self.__only_with_salary = False
-        self.__currency = None
-        self.__page = 0
-        self.__per_page = 20
+        self.per_page = 50
 
     def __repr__(self):
         return f'{self.__class__.__name__}()'
@@ -28,13 +21,7 @@ class HHApi(ApiWorker):
         vacancies = []
         params = {
             "text": self.keyword,
-            "experience": self.__experience,
-            "salary": self.__salary,
-            "area": self.__area,
-            "only_with_salary": self.__only_with_salary,
-            "currency": self.__currency,
-            "page": self.__page,
-            "per_page": self.__per_page
+            "per_page": self.per_page
         }
 
         hh_response = requests.get(self.api_url, params)
@@ -57,15 +44,24 @@ class HHApi(ApiWorker):
                 if item['snippet']['responsibility'] is None:
                     responsibility = ''
                 else:
-                    responsibility = item['snippet']['responsibility']
+                    responsibility = item['snippet']['responsibility'].replace('<highlighttext>', '').replace(
+                        '</highlighttext>', '')
 
                 area = item['area']['name']
 
-                # проверка на наличие указания зарплаты
+                # проверка на наличие указания зарплаты и корректировка написания с api superjob
                 if item['salary'] is None:
                     salary_from = 0
                     salary_to = 0
                     currency = None
+                elif not item['salary']['from']:
+                    salary_from = 0
+                    salary_to = item['salary']['to']
+                    currency = item['salary']['currency']
+                elif not item['salary']['to']:
+                    salary_from = item['salary']['from']
+                    salary_to = 0
+                    currency = item['salary']['currency']
                 else:
                     salary_from = item['salary']['from']
                     salary_to = item['salary']['to']
@@ -99,19 +95,20 @@ class HHApi(ApiWorker):
         else:
             print(f'Ошибка подключения к серверу - {hh_response.status_code}')
 
-
-a = HHApi()
-a.keyword = 'python'
-b = a.get_vacancies()
-#print(b)
-# c = b.write_json
-#for i in b:
-    #print(i)
-    # print(i.description)
-    # print(i.salary)
-    # print(i.experience)
-    # print(i.area)
-    # print(i.vac_url())
-    # print(i.vac_employer)
-    # print(i.vac_employment)
-    #print(i.all_vacancy_information())
+# a = HHApi()
+# a.keyword = 'python'
+# a.per_page = 1
+# b = a.get_vacancies()
+# print(b)
+# a.write_json('vacancies.json', b)
+# for i in b:
+#     # print(i)
+#     # print(i.description())
+#     # print(i.salary())
+#     # print(i.experience)
+#     # print(i.area)
+#     # print(i.vac_url())
+#     # print(i.employer)
+#     # print(i.employment)
+#     # print(i.currency)
+#     print(i.all_vacancy_information())
