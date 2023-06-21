@@ -8,13 +8,13 @@ class ApiWorker(ABC):
         self.api_url = None
         self.keyword = None
         self.vacancy_url = None
-        self.__experience = None
-        self.__salary = None
-        self.__area = None
-        self.__only_with_salary = False
-        self.__currency = None
-        self.__page = 0
-        self.__per_page = 100
+        self.experience = None
+        self.salary = None
+        self.area = None
+        self.only_with_salary = False
+        self.currency = None
+        self.page = 0
+        self.per_page = 50
 
     @abstractmethod
     def get_vacancies(self):
