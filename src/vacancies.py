@@ -23,93 +23,110 @@ class Vacancies:
 
         self.name = name
         self.vacancy_url = vacancy_url
-        self.__requirement = requirement
-        self.__responsibility = responsibility
-        self.__salary_from = salary_from
-        self.__salary_to = salary_to
-        self.__currency = currency
-        self.__experience = experience
-        self.__employer = employer
-        self.__employment = employment
-        self.__area = area
+        self.requirement = requirement
+        self.responsibility = responsibility
+        self.salary_from = salary_from
+        self.salary_to = salary_to
+        self.currency = currency
+        self.experience = experience
+        self.employer = employer
+        self.employment = employment
+        self.area = area
 
         Vacancies.vacancies.append(self)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.name}, {self.vacancy_url}, {self.__requirement},' \
-               f'{self.__responsibility}, {self.__salary_from}, {self.__salary_to},' \
-               f'{self.__currency}, {self.__experience}, {self.__employer},' \
-               f'{self.__employment}, {self.__area})'
+        return f'{self.__class__.__name__}({self.name}, {self.vacancy_url}, {self.requirement},' \
+               f'{self.responsibility}, {self.salary_from}, {self.salary_to},' \
+               f'{self.currency}, {self.experience}, {self.employer},' \
+               f'{self.employment}, {self.area})'
 
     def __str__(self):
         return f'Вакансия: {self.name}'
 
-    @property
+    def __gt__(self, other):
+        return int(self.salary_from) > int(other.salary_from)
+
+    def __ge__(self, other):
+        return int(self.salary_from) >= int(other.salary_from)
+
+    def __lt__(self, other):
+        return int(self.salary_from) < int(other.salary_from)
+
+    def __le__(self, other):
+        return int(self.salary_from) <= int(other.salary_from)
+
+    def __eq__(self, other):
+        return int(self.salary_from) == int(other.salary_from)
+
+    def requirement(self):
+        """Возвращает требования вакансии"""
+
+        return self.requirement
+
+    def responsibility(self):
+        """Возвращает обязанности вакансии"""
+
+        return self.responsibility
+
     def description(self):
         """Возвращает подробную информацию о вакансии"""
 
-        return f'Описание вакансии (требования и обязанности):\n{self.__requirement}\n' \
-               f'{self.__responsibility}'
+        return f'{self.requirement}' \
+               f' {self.responsibility}'
 
-    @property
     def salary(self):
         """Возвращает диапазон зарплат у вакансии"""
 
-        if self.__salary_from == 0 and self.__salary_to == 0:
+        if self.salary_from == 0 and self.salary_to == 0:
             return "Зарплата не указана"
 
-        elif self.__salary_from is None:
-            return f'З/п до {self.__salary_to} {self.__currency}'
+        elif self.salary_from is None:
+            return f'{self.salary_to} {self.currency}'
 
-        elif self.__salary_to is None or self.__salary_to == 0:
-            return f'З/п от {self.__salary_from} {self.__currency}'
+        elif self.salary_to is None or self.salary_to == 0:
+            return f'{self.salary_from} {self.currency}'
 
-        elif self.__salary_from == self.__salary_to:
-            return f'З/п {self.__salary_from} {self.__currency}'
+        elif self.salary_from == self.salary_to:
+            return f'{self.salary_from} {self.currency}'
 
         else:
-            return f'З/п от {self.__salary_from} до {self.__salary_to} {self.__currency}'
+            return f'{self.salary_from}-{self.salary_to} {self.currency}'
 
-    @property
     def currency(self):
         """Возвращает валюту зарплаты"""
 
-        return self.__currency
+        return self.currency
 
-    @property
     def experience(self):
         """Возвращает опыт для вакансии"""
 
-        return f'Опыт работы: {self.__experience}'
+        return self.experience
 
-    @property
     def vac_url(self):
         """Возвращает ссылку на вакансию"""
 
-        return f'Ссылка на вакансию: {self.vacancy_url}'
+        return self.vacancy_url
 
-    @property
     def area(self):
-        """Возвращает нахождение вакансии"""
+        """Возвращает город вакансии"""
 
-        return self.__area
+        return self.area
 
-    @property
     def employer(self):
         """Возвращает работодателя"""
 
-        return f'Работодатель: {self.__employer}'
+        return self.employer
 
-    @property
     def employment(self):
         """Возвращает занятость"""
 
-        return f'Занятость: {self.__employment}'
+        return self.employment
 
     def all_vacancy_information(self):
         """Возвращает всю информацию о вакансии"""
 
-        return f'Вакансия:\n{self.name}, {self.salary}\n' \
-               f'{self.experience}\nГород: {self.area}\n' \
-               f'{self.description}\n{self.employment}\n' \
-               f'{self.employer}\n{self.vac_url()}'
+        return f'Вакансия:\n{self.name}, с з/п: {self.salary()}\n' \
+               f'Опыт работы: {self.experience}\nГород: {self.area}\n' \
+               f'Описание и требования: {self.description()}\nЗанятость: {self.employment}\n' \
+               f'Работодатель: {self.employer}\nСсылка на вакансию: {self.vac_url()}'
