@@ -12,12 +12,7 @@ class SJApi(ApiWorker):
         self.sj_api_token = sj_api_token
         self.api_url = 'https://api.superjob.ru/2.0/vacancies/'
         self.keyword = None
-        self.__experience = None
-        self.__area = None
-        self.__only_with_salary = 0
-        self.__salary = None
-        self.__page = 0
-        self.__count = 20
+        self.count = 50
 
     def get_vacancies(self):
         """Возвращает список вакансий"""
@@ -25,11 +20,7 @@ class SJApi(ApiWorker):
         vacancies = []
         params = {
             "keyword": self.keyword,
-            "experience": self.__experience,
-            "payment_from": self.__salary,
-            "town": self.__area,
-            "no_agreement": self.__only_with_salary,
-            "page": self.__page,
+            "count": self.count,
         }
 
         sj_response = requests.get(self.api_url, params, headers=self.sj_api_token)
@@ -58,7 +49,9 @@ class SJApi(ApiWorker):
                 salary_to = item['payment_to']
 
                 # Корректировка соответствия написания валюты с hh.ru
-                if item['currency'] == 'rub':
+                if not item['payment_from'] and not item['payment_to']:
+                    currency = None
+                elif item['currency'] == 'rub':
                     currency = 'RUR'
                 else:
                     currency = item['currency']
@@ -91,19 +84,19 @@ class SJApi(ApiWorker):
         else:
             print(f'Ошибка подключения к серверу - {sj_response.status_code}')
 
-
-a = SJApi()
-# print(a)
-a.keyword = 'python'
-b = a.get_vacancies()
-print(b)
-for i in b:
-    # print(i)
-    # print(i.description)
-    # print(i.salary)
-    # print(i.experience)
-    # print(i.area)
-    # print(i.vac_url())
-    # print(i.vac_employer)
-    # print(i.vac_employment)
-    print(i.all_vacancy_information())
+# a = SJApi()
+# # print(a)
+# a.keyword = 'python'
+# a.count = 5
+# b = a.get_vacancies()
+# #print(b)
+# for i in b:
+#     # print(i)
+#     # print(i.description())
+#     # print(i.salary())
+#     # print(i.experience)
+#     # print(i.area)
+#     # print(i.vac_url())
+#     # print(i.employer)
+#     # print(i.employment)
+#     print(i.all_vacancy_information())
