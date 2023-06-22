@@ -13,6 +13,7 @@ class JsonSaver:
         with open(filename, 'w', encoding='utf-8') as file:
             json_file = []
 
+            # Создаем словарь, который запишется в файл
             for vac in vacancies:
                 vacancies_dict = {'name': vac.name,
                                   'salary': vac.salary(),
@@ -39,7 +40,9 @@ class JsonSaver:
         with open(filename, 'r', encoding='UTF-8') as file:
             json_data = file.read()
             data = json.loads(json_data)
+
         vacancies = []
+
         for i in data:
             name = i["name"]
             requirement = i["requirement"]
@@ -53,6 +56,7 @@ class JsonSaver:
             area = i["area"]
             vacancy_url = i["vacancy_url"]
 
+            # Создаем экземпляр класса Vacancies
             vacancy = Vacancies(
                 name,
                 requirement,
@@ -70,30 +74,13 @@ class JsonSaver:
 
         return vacancies
 
-    def sort_by_max_salary(self, vacancies):
+    @staticmethod
+    def sort_by_max_salary(vacancies):
         """Сортировка вакансий по наибольшей зарплате"""
 
         max_salary_list = sorted(vacancies,
-                                 key=lambda x: x.get('salary_max') if x.get('salary_max') != 0 else x.get('salary_min'),
+                                 key=lambda
+                                 vacancy: vacancy.salary_to if vacancy.salary_to != 0 else vacancy.salary_from,
                                  reverse=True)
-        # max_salary_list = sorted(vacancies, reverse=True)
 
         return max_salary_list
-
-# a = JsonSaver()
-# b = a.load_from_file()
-# c = a.sort_by_max_salary()
-# print(b)
-# print(c)
-# for res in c:
-#     print(res["name"], '-', res["salary"])
-# a = HHApi()
-# a.per_page = 3
-# a.keyword = 'java'
-# a.get_vacancies()
-# # print(b)
-# #c = Vacancies.vacancies
-# # print('-----')
-# # print(c)
-# # print('-----')
-# write_json()
