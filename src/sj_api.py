@@ -83,20 +83,3 @@ class SJApi(ApiWorker):
 
         else:
             print(f'Ошибка подключения к серверу - {sj_response.status_code}')
-
-# a = SJApi()
-# # print(a)
-# a.keyword = 'python'
-# a.count = 5
-# b = a.get_vacancies()
-# #print(b)
-# for i in b:
-#     # print(i)
-#     # print(i.description())
-#     # print(i.salary())
-#     # print(i.experience)
-#     # print(i.area)
-#     # print(i.vac_url())
-#     # print(i.employer)
-#     # print(i.employment)
-#     print(i.all_vacancy_information())

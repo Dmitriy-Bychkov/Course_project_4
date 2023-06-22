@@ -94,21 +94,3 @@ class HHApi(ApiWorker):
 
         else:
             print(f'Ошибка подключения к серверу - {hh_response.status_code}')
-
-# a = HHApi()
-# a.keyword = 'python'
-# a.per_page = 1
-# b = a.get_vacancies()
-# print(b)
-# a.write_json('vacancies.json', b)
-# for i in b:
-#     # print(i)
-#     # print(i.description())
-#     # print(i.salary())
-#     # print(i.experience)
-#     # print(i.area)
-#     # print(i.vac_url())
-#     # print(i.employer)
-#     # print(i.employment)
-#     # print(i.currency)
-#     print(i.all_vacancy_information())
